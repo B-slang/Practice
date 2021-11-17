@@ -1,6 +1,7 @@
 
-const india = new Date()
-india.toLocaleString('en-IN',{timeZone:'Asia/Kolkata'})
 
-console.log(india)
+    const india = new Date()
+    india.toLocaleString('en-IN',{timeZone:'Asia/Kolkata'})
+    
+    console.log(india)
 
