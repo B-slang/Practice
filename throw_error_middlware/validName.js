@@ -1,8 +1,14 @@
-
-const validName =async(req,res) =>{
+const validName =async(req,res, next) =>{
     console.log(req.body)
+    const name = req.body.name
+    const age = 12;
+    const gender = "male"
+    const userdetails = {name, age, gender}
     // const name ="ni";
-    if(req.body.name.length >3 ){
+    if(name.length >3 ){
+
+        req.user = userdetails
+        // console.log(req.user, "===")
         next()
     }
     else{
