@@ -1,6 +1,5 @@
 const express = require("express");
 const timeroutes = require("./Express/timeroutes")
-require('./CRUD/config')
 
 const validName =require('./throw_error_middlware/validName')
 
