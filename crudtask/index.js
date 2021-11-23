@@ -10,3 +10,15 @@ sequelize.authenticate().then(()=>{
 }).catch(Error=>{
     console.log("error", Error );
 })
+
+const db = {};
+db.Sequelize = Sequelize;
+db.sequelize= sequelize;
+
+db.products= require('./models/product')(sequelize, Sequelize.DataTypes)
+
+db.sequelize.sync().then(()=>{
+    console.log("Yes Synced")
+})
+
+module.exports = Sequelize;

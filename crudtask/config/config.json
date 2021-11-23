@@ -1,7 +1,7 @@
 {
   "development": {
     "username": "postgres",
-    "password": null,
+    "password": "root",
     "database": "cruddb",
     "host": "127.0.0.1",
     "dialect": "postgresql"
@@ -11,13 +11,13 @@
     "password": null,
     "database": "database_test",
     "host": "127.0.0.1",
-    "dialect": "postgresql"
+    "dialect": "mysql"
   },
   "production": {
     "username": "root",
-    "password": null, 
+    "password": null,
     "database": "database_production",
     "host": "127.0.0.1",
-    "dialect": "postgresql"
+    "dialect": "mysql"
   }
 }
