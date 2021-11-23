@@ -1,8 +1,8 @@
 const Sequelize = require('sequelize')
 
-const sequelize = new Sequelize('cruddb', 'root', 'root', {
+const sequelize = new Sequelize('cruddb', 'postgres', 'root', {
     host:'localhost',
-    dialect:'mysql'
+    dialect:'postgresql'
 })
 
 sequelize.authenticate().then(()=>{
