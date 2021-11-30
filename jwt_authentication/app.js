@@ -8,7 +8,8 @@ app.use(express.json())
 
 
 
-
+require('./routes/authroutes')(app);
+require('./routes/userroutes')(app);
 
 db.sequelize.sync().then(()=>{
 
@@ -25,6 +26,26 @@ app.get('/', (req,res)=>{
 })
 
 
+
+
 app.listen(port,()=>{
     console.log(`listening ${port}`)
 })  
+
+
+function initial() {
+  Role.create({
+    id: 1,
+    name: "user"
+  });
+ 
+  Role.create({
+    id: 2,
+    name: "moderator"
+  });
+ 
+  Role.create({
+    id: 3,
+    name: "admin"
+  });
+}
