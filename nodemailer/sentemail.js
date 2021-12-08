@@ -1,29 +1,30 @@
 const { createTransport } = require("nodemailer");
-// const multer = require('multer')
+const multer = require('multer')
 
 
-//Configuring Multer 
+// // Configuring Multer 
 // Storing the files in the folder
-// const storage = multer.diskStorage({
-//     destination: function (req, file, cb) {
-//         cb(null, "/images");
-//     },
-//     filename: function (req, file, cb) {
-//         cb(null, file.originalname);
-//     },
-// });
+const storage = multer.diskStorage({
+    destination: function (req, file, cb) {
+        cb(null, "public/");
+    },
+    filename: function (req, file, cb) {
+        cb(null, file.originalname);
+    },
+});
 
 // to store the files in the destination folder
-// const uploads = multer({
-//     storage: storage,
-// });
+const uploads = multer({
+    storage: storage,
+});
 
-exports.sendMail = async (req, res) => {
+exports.sendMail = [uploads.single('filename'),async (req, res) => {
     try {
         const {  emailTo, subject  , text , cc  , bcc , } = req.body;
-        // path = req.file.path
-        // filename = req.file.originalname
-        console.log(req.body)
+        path = req.file.path
+        filename = req.file.originalname
+        console.log("filename", filename);
+        console.log(`body`,req.body)
 
     // create reusable transporter object using the default SMTP transport
     const transporter = createTransport({
@@ -41,11 +42,11 @@ exports.sendMail = async (req, res) => {
         bcc : bcc,
         subject : subject,
         text : text,
-        // attachments: [
-        //     {   // utf-8 string as an attachment
-        //       filename : filename,
-        //       path : path
-        //     }]
+        attachments: [
+            {   // utf-8 string as an attachment
+              filename : filename,
+              path : path
+            }]
     }
     // console.log("ara h");
     //Sending Mail
@@ -66,5 +67,6 @@ exports.sendMail = async (req, res) => {
     }
 
 }
+]
 
 
