@@ -29,8 +29,8 @@ exports.sendMail = async (req, res) => {
     const transporter = createTransport({
         service : 'gmail',
         auth: {
-            user : 'brijeshvishwakarma@nimapinfotech.com',
-            pass : 'Brijesh@7641'
+            user : process.env.sendEmail,
+            pass : process.env.senderPass
         }
     })
     //All Message in mail
@@ -47,7 +47,7 @@ exports.sendMail = async (req, res) => {
         //       path : path
         //     }]
     }
-    console.log("ara h");
+    // console.log("ara h");
     //Sending Mail
        await transporter.sendMail(mailData, function(err,info) {
         if(err){
