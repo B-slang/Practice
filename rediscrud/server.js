@@ -1,131 +1,40 @@
 const express = require('express');
-const redis = require('redis');
-// added axios as HTTP client
 const app = express();
 const axios = require('axios');
-// const redis = require('redis');
-const client = redis.createClient();
-
-// const  = redis.createClient();
-// await redisClient.connect()
-(async () => {
-  
-  client.on('error', (err) => console.log('Redis Client Error', err));
-  
-  await client.connect();
-  console.log("+++++++++++++++++++++++++++++++++++++");
-})()
-
-
-
-// const client = redis.createClient({
-//     host: '127.0.0.1',
-//     port: 6379
-   
-// });
-
-// client.on('error', err => {
-//     console.log('Error ' + err);
-// });
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+const redis = require('redis');
+const client = redis.createClient(6379, '127.0.0.1');
 
 const PORT = process.env.PORT || 3000;
 
-// added Fake API
-const MOCK_API = "https://jsonplaceholder.typicode.com/users/";
+(async () => {
+    console.log("(((((((((((((((((*)))))))");
 
-//API Call
+    client.on('error', (err) => console.log('Redis Client Error', err));
 
-app.get('/cache/user/:email', async (req, res) => {
-  const email = req.params.email;
+    await client.connect();
+    console.log("+++++++++++++++++++++++++++++++++++++");
+})()
 
-  try{
-    await client.get(email, async (err, response) => {
-      console.log(response);
-      console.log("________");
-      if(response) {
-        console.log("User successfully retrieved from cache");
-        res.status(200).send(JSON.parse(response));
-      } else {
-        const response = await axios.get(`${MOCK_API}?email=${email}`);
-        const user = response.data;
-        await client.setex(email, 600, JSON.stringify(user));
-        console.log("User successfully retrieved from the API");
-        res.status(200).send(user);
-      }
-    })
-  }catch(err) {
-    res.status(500).send({ error: err.message });
-  }
+async function getDataFromRedis() {
+    let dataCache = await client.get("Stories")
+    if (dataCache) {
+        return { message: "Data taken from Redis", result: JSON.parse(dataCache) };
+    }
+    await client.set("Stories", JSON.stringify({ name: "Fault in Our Stars" }))
+    return { message: "Stored in the redis", result: { name: "Fault in Our Stars" } };
+}
+
+app.get('/api/search', async (req, res) => {
+    try {
+        const data = await getDataFromRedis();
+        console.log(data)
+        return res.status(200).json({ message: data.message, results: data.result });
+    } catch (err) {
+        return res.status(500).json({ message: err.message })
+    }
 })
 
 
-
-
-
-
-
-
-
-
-
-// app.get('/user/:email', async (req, res) => {
-//   const email = req.params.email;
-
-//   try {
-//     const response = await axios.get(`${MOCK_API}?email=${email}`);
-//     const user = response.data
-//     console.log("User successfully retrieved from the API");
-//     res.status(200).send(user);
-//   } catch (err) {
-//     res.status(500).send(err);
-//   }
-// })
-
-
 app.listen(PORT, () => {
-  console.log(`Server started at port: ${PORT}`);
+    console.log(`Server started at port: ${PORT}`);
 });
